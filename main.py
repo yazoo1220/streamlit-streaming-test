@@ -6,7 +6,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
 import openai
 
-st.header("Chat your data")
+st.header("AMA for Eurovision")
 st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
 
 user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="input")
