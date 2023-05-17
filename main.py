@@ -19,7 +19,7 @@ text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 docs = text_splitter.split_documents(documents)
 embeddings = OpenAIEmbeddings()
 docsearch = Chroma.from_documents(docs, embeddings)
-handler = StreamingStdOutCallbackHandler()
+handler = StreamlitCallbackHandler()
 
 def gen_prompt(docs, query) -> str:
     return f"""To answer the question please only use the Context given, nothing else. Do not make up answer, simply say 'I don't know' if you are not sure.
