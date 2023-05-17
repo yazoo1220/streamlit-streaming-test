@@ -43,7 +43,11 @@ if st.button("Submit", type="primary"):
     res_box = st.empty()
     report = []
     chat = ChatOpenAI(streaming=True, callbacks=[handler], temperature=0.9, memory=memory)
-    resp = chat([HumanMessage(content=user_input)])
+    conversation = ConversationChain(
+        llm=chat, 
+        verbose=True, 
+        memory=ConversationBufferMemory()
+    )
     
 
 st.markdown("----")
