@@ -47,7 +47,8 @@ if st.button("Submit", type="primary"):
     conversation = ConversationChain(
         llm=chat, 
         verbose=True, 
-        memory=ConversationBufferMemory()
+        memory=ConversationBufferMemory(),
+        callbacks=[handler]
     )
     
 
