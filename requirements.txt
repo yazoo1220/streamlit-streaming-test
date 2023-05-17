@@ -5,3 +5,4 @@ unstructured
 chromadb 
 tiktoken
 tabulate
+pdf2image
