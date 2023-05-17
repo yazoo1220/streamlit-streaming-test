@@ -40,16 +40,18 @@ memory = ConversationBufferMemory()
 #      return prompt
 
 if st.button("Submit", type="primary"):
-    st.markdown("----")
-    res_box = st.empty()
-    report = []
-    chat = ChatOpenAI(streaming=True, callbacks=[handler], temperature=0.9, memory=memory)
-    conversation = ConversationChain(
-        llm=chat, 
-        verbose=True, 
-        memory=ConversationBufferMemory(),
-        callbacks=[handler]
-    )
+    with st.spinner('typing...'):
+        st.markdown("----")
+        res_box = st.empty()
+        report = []
+        chat = ChatOpenAI(streaming=True, callbacks=[handler], temperature=0.9, memory=memory)
+        conversation = ConversationChain(
+            llm=chat, 
+            verbose=True, 
+            memory=ConversationBufferMemory(),
+            callbacks=[handler]
+        )
+        conversation.predict(input=user_input)
     
 
 st.markdown("----")
