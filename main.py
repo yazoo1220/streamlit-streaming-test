@@ -47,7 +47,6 @@ if st.button("Submit", type="primary"):
         chat = ChatOpenAI(streaming=True, temperature=0.9)
         conversation = ConversationChain(
             llm=chat, 
-            verbose=True, 
             memory=ConversationBufferMemory(),
             callbacks=[handler]
         )
