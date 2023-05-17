@@ -4,3 +4,4 @@ streamlit==1.14.0
 unstructured
 chromadb 
 tiktoken
+duckdb
