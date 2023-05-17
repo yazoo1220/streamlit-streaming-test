@@ -1,9 +1,10 @@
-from langchain.llms import OpenAI
+from langchain. chat_models import ChatOpenAI
 import streamlit as st
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.document_loaders import UnstructuredURLLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
+from langchain.callbacks.streamlit import StreamlitCallbackHandler
 import openai
 
 st.header("AMA for Eurovision")
@@ -18,6 +19,7 @@ text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 docs = text_splitter.split_documents(documents)
 embeddings = OpenAIEmbeddings()
 docsearch = Chroma.from_documents(docs, embeddings)
+handler = StreamingStdOutCallbackHandler()
 
 def gen_prompt(docs, query) -> str:
     return f"""To answer the question please only use the Context given, nothing else. Do not make up answer, simply say 'I don't know' if you are not sure.
@@ -35,16 +37,10 @@ if st.button("Submit", type="primary"):
     st.markdown("----")
     res_box = st.empty()
     report = []
-    completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", 
-                                             messages=[
-          {"role": "system", "content": "You're an assistant."},
-          {"role": "user", "content": f"{prompt(user_input)}"},
-          ], 
-        stream=True, 
-        max_tokens=100,
-        temperature=0)
+    chat = ChatOpenAI(streaming=True, callbacks=[handler], temperature=0.9)
+    resp = chat([HumanMessage(content=user_input)])
     
-    for line in completion:
+    for line in resp:
         if 'content' in line['choices'][0]['delta']:
             # join method to concatenate the elements of the list 
             # into a single string, 
