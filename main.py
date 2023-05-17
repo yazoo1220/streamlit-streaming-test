@@ -11,7 +11,7 @@ st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
 user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="input")
 
 
-loader = UnstructuredURLLoader("https://en.wikipedia.org/wiki/Eurovision_Song_Contest")
+loader = UnstructuredURLLoader(["https://en.wikipedia.org/wiki/Eurovision_Song_Contest"])
 documents = loader.load()
 text_splitter = CharacterTextSplitter(chunk_size=3000, chunk_overlap=0)
 docs = CharacterTextSplitter.split_documents(documents)
