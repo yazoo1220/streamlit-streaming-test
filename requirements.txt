@@ -4,4 +4,3 @@ streamlit
 unstructured
 chromadb 
 tiktoken
-duckdb
