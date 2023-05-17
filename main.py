@@ -1,9 +1,8 @@
-import openai
-import streamlit as st
+from langchain.llms import OpenAI
 from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.document_loaders import UnstructuredURLLoader
+from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
-
-openai.api_key = st.secrets['api_secret']
 
 st.header("Chat your data")
 st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
@@ -11,10 +10,12 @@ st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
 user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="input")
 
 
-embeddings = OpenAIEmbeddings(openai_api_key=openai.api_key)
-persist_directory = 'database/'
-docsearch = Chroma(embedding_function=embeddings, persist_directory=persist_directory)
-
+loader = UnstructuredURLLoader("https://en.wikipedia.org/wiki/Eurovision_Song_Contest")
+documents = loader.load()
+text_splitter = CharacterTextSplitter(chunk_size=3000, chunk_overlap=0)
+docs = CharacterTextSplitter.split_documents(documents)
+embeddings = OpenAIEmbeddings()
+docsearch = Chroma(docs, embeddings)
 
 def gen_prompt(docs, query) -> str:
     return f"""To answer the question please only use the Context given, nothing else. Do not make up answer, simply say 'I don't know' if you are not sure.
