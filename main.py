@@ -43,14 +43,5 @@ if st.button("Submit", type="primary"):
     chat = ChatOpenAI(streaming=True, callbacks=[handler], temperature=0.9)
     resp = chat([HumanMessage(content=user_input)])
     
-    for line in resp:
-        if 'content' in line['choices'][0]['delta']:
-            # join method to concatenate the elements of the list 
-            # into a single string, 
-            # then strip out any empty strings
-            report.append(line['choices'][0]['delta']['content'])
-        result = "".join(report).strip()
-        result = result.replace("\n", "")
-        res_box.markdown(f'*{result}*')
-            
+
 st.markdown("----")
