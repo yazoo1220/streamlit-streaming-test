@@ -4,6 +4,7 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.document_loaders import UnstructuredURLLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
+import openai
 
 st.header("Chat your data")
 st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
