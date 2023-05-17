@@ -8,6 +8,7 @@ from langchain.callbacks.streamlit import StreamlitCallbackHandler
 from langchain.schema import (
     HumanMessage,
 )
+from langchain.memory import ConversationBufferMemory
 import openai
 
 st.header("AMA for Eurovision")
@@ -23,6 +24,7 @@ docs = text_splitter.split_documents(documents)
 embeddings = OpenAIEmbeddings()
 docsearch = Chroma.from_documents(docs, embeddings)
 handler = StreamlitCallbackHandler()
+memory = ConversationBufferMemory()
 
 def gen_prompt(docs, query) -> str:
     return f"""To answer the question please only use the Context given, nothing else. Do not make up answer, simply say 'I don't know' if you are not sure.
@@ -40,7 +42,7 @@ if st.button("Submit", type="primary"):
     st.markdown("----")
     res_box = st.empty()
     report = []
-    chat = ChatOpenAI(streaming=True, callbacks=[handler], temperature=0.9)
+    chat = ChatOpenAI(streaming=True, callbacks=[handler], temperature=0.9, memory=memory)
     resp = chat([HumanMessage(content=user_input)])
     
 
