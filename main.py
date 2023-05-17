@@ -8,6 +8,7 @@ from langchain.callbacks.streamlit import StreamlitCallbackHandler
 from langchain.schema import (
     HumanMessage,
 )
+from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
 import openai
 
