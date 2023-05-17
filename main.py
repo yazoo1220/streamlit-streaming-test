@@ -14,7 +14,7 @@ user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="inp
 loader = UnstructuredURLLoader(["https://en.wikipedia.org/wiki/Eurovision_Song_Contest"])
 documents = loader.load()
 text_splitter = CharacterTextSplitter(chunk_size=3000, chunk_overlap=0)
-docs = text_splitter.create_documents(documents)
+docs = text_splitter.split_documents(documents)
 embeddings = OpenAIEmbeddings()
 docsearch = Chroma(docs, embeddings)
 
