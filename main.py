@@ -14,9 +14,11 @@ st.header("AMA")
 st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
 
 
-if "memory" not in st.session_state:
-    st.session_state.memory = ConversationBufferMemory(memory_key="chat_history")
-
+def get_state(): 
+     if "state" not in st.session_state: 
+         st.session_state.state = {"memory": ConversationBufferMemory(memory_key="chat_history")} 
+     return st.session_state.state 
+state = get_state()
 
 prompt = PromptTemplate(
     input_variables=["chat_history","question"], 
@@ -49,7 +51,7 @@ if ask:
         conversation = ConversationChain(
             llm=chat, 
             prompt=prompt,
-            memory=st.session_state.memory            
+            memory=state['memory']            
         )
         res = conversation.predict(question=user_input, callbacks=[handler])
     
