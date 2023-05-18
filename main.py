@@ -16,8 +16,8 @@ from typing import Any, Dict, List
 st.header("AMA")
 st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
 
-ask = st.button('ask',type='primary')
 user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="input")
+ask = st.button('ask',type='primary')
 
 class SimpleStreamlitCallbackHandler(BaseCallbackHandler):
     """ Copied only streaming part from StreamlitCallbackHandler """
@@ -35,8 +35,8 @@ handler = SimpleStreamlitCallbackHandler()
 memory = ConversationBufferMemory()
 
 if ask:
+    st.markdown("----")
     with st.spinner('typing...'):
-        st.markdown("----")
         res_box = st.empty()
         report = []
         chat = ChatOpenAI(streaming=True, temperature=0.9)
@@ -45,6 +45,4 @@ if ask:
             memory=ConversationBufferMemory()            
         )
         res = conversation.predict(input=user_input, callbacks=[handler])
-    
-
-st.markdown("----")
+    st.markdown("----")
