@@ -22,7 +22,7 @@ st.write(state)
 st.write(state['memory'])
 
 prompt = PromptTemplate(
-    input_variables=["history","question"], 
+    input_variables=["chat_history","question"], 
     template='Based on the following chat_history, Please reply to the question in format of markdown. history: {chat_history}. question: {question}'
 )
 
