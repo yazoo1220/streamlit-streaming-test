@@ -24,7 +24,7 @@ class SimpleStreamlitCallbackHandler(StreamlitCallbackHandler):
         """do nothing"""
         pass
     
-        def on_chain_start(
+    def on_chain_start(
         self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs: Any
     ) -> None:
         """do nothing"""
