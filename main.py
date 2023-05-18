@@ -1,5 +1,6 @@
-from langchain. chat_models import ChatOpenAI
 import streamlit as st
+from langchain. chat_models import ChatOpenAI
+from langchain import PromptTemplate
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.document_loaders import UnstructuredURLLoader
 from langchain.text_splitter import CharacterTextSplitter
