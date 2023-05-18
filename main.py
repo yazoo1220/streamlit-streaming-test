@@ -52,7 +52,6 @@ if ask:
         conversation = ConversationChain(
             llm=chat, 
             prompt=prompt,
-            retriever=retriever,
             memory=state['memory']            
         )
         res = conversation(question=user_input, callbacks=[handler])
