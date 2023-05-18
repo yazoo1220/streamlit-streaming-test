@@ -34,10 +34,10 @@ class SimpleStreamlitCallbackHandler(BaseCallbackHandler):
 handler = SimpleStreamlitCallbackHandler()
 memory = ConversationBufferMemory()
 
+st.markdown("----")
 if ask:
-    st.markdown("----")
+    res_box = st.empty()
     with st.spinner('typing...'):
-        res_box = st.empty()
         report = []
         chat = ChatOpenAI(streaming=True, temperature=0.9)
         conversation = ConversationChain(
@@ -45,4 +45,5 @@ if ask:
             memory=ConversationBufferMemory()            
         )
         res = conversation.predict(input=user_input, callbacks=[handler])
-    st.markdown("----")
+    
+st.markdown("----")
