@@ -17,7 +17,7 @@ def get_state():
     if "state" not in st.session_state:
         st.session_state.state = {"memory": ConversationBufferMemory(memory_key="chat_history")}
     return st.session_state.state
-state = get_state()
+memory = get_state()
 
 memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
