@@ -22,8 +22,8 @@ st.write(state)
 st.write(state['memory'])
 
 prompt = PromptTemplate(
-    input_variables=["chat_history","question"], 
-    template='Based on the following chat_history, Please reply to the question in format of markdown. history: {chat_history}. question: {question}'
+    input_variables=["chat_history","input"], 
+    template='Based on the following chat_history, Please reply to the question in format of markdown. history: {chat_history}. question: {input}'
 )
 
 user_input = st.text_input("You: ",placeholder = "Ask me anything ...")
@@ -54,6 +54,6 @@ if ask:
             prompt=prompt,
             memory=state['memory']            
         )
-        res = conversation(question=user_input, callbacks=[handler])
+        res = conversation(input=user_input, callbacks=[handler])
     
 st.markdown("----")
