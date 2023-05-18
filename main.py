@@ -19,7 +19,6 @@ def get_state():
     return st.session_state.state
 memory = get_state()
 
-memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
 prompt = PromptTemplate(
     input_variables=["chat_history","input"], 
