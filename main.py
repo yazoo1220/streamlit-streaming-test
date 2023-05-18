@@ -40,10 +40,12 @@ if ask:
     with st.spinner('typing...'):
         report = []
         chat = ChatOpenAI(streaming=True, temperature=0.9)
+        prefix = 'Please output as markdown and wrap code blocks with ```'
+        query = prefix + user_input
         conversation = ConversationChain(
             llm=chat, 
             memory=ConversationBufferMemory()            
         )
-        res = conversation.predict(input=user_input, callbacks=[handler])
+        res = conversation.predict(input=query, callbacks=[handler])
     
 st.markdown("----")
