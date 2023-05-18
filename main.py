@@ -16,6 +16,19 @@ from typing import Any, Dict, List
 st.header("AMA")
 st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
 
+def get_state():
+    if "state" not in st.session_state:
+        st.session_state.state = {"memory": ConversationBufferMemory(memory_key="chat_history")}
+    return st.session_state.state
+state = get_state()
+
+memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+
+prompt = PromptTemplate(
+    input_variables=["chat_history", "question"], 
+    template='Please output as markdown'
+)
+
 user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="input")
 ask = st.button('ask',type='primary')
 st.markdown("----")
@@ -33,19 +46,16 @@ class SimpleStreamlitCallbackHandler(BaseCallbackHandler):
         self.tokens_area.markdown(self.tokens_stream)
 
 handler = SimpleStreamlitCallbackHandler()
-memory = ConversationBufferMemory(memory_key="history")
 
 if ask:
     res_box = st.empty()
     with st.spinner('typing...'):
         report = []
         chat = ChatOpenAI(streaming=True, temperature=0.9)
-        prefix = 'Please output as markdown'
-        query = prefix + user_input
         conversation = ConversationChain(
             llm=chat, 
             memory=memory            
         )
-        res = conversation.predict(input=query, callbacks=[handler])
+        res = conversation.predict(input=user_input, callbacks=[handler])
     
 st.markdown("----")
