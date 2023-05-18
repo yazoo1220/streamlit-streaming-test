@@ -16,29 +16,23 @@ from typing import Any, Dict, List
 st.header("AMA")
 st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
 
+ask = st.button('ask',type='primary')
 user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="input")
 
-class SimpleStreamlitCallbackHandler(StreamlitCallbackHandler):
-    def on_llm_start(
-        self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
-    ) -> None:
-        """do nothing"""
-        pass
+class SimpleStreamlitCallbackHandler(BaseCallbackHandler):
+    """ Copied only streaming part from StreamlitCallbackHandler """
     
-    def on_chain_start(
-        self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs: Any
-    ) -> None:
-        """do nothing"""
-        pass
-
-    def on_chain_end(self, outputs: Dict[str, Any], **kwargs: Any) -> None:
-        """do nothing"""
-        pass
+    def __init__(self) -> None:
+        self.tokens_area = st.empty()
+        self.tokens_stream = ""
+        
+    def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
+        """Run on new LLM token. Only available when streaming is enabled."""
+        self.tokens_stream += token
+        self.tokens_area.write(self.tokens_stream)
 
 handler = SimpleStreamlitCallbackHandler()
 memory = ConversationBufferMemory()
-
-ask = st.button('ask',type='primary')
 
 if ask:
     with st.spinner('typing...'):
