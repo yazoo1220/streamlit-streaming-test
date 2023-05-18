@@ -18,6 +18,7 @@ st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
 
 user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="input")
 ask = st.button('ask',type='primary')
+st.markdown("----")
 
 class SimpleStreamlitCallbackHandler(BaseCallbackHandler):
     """ Copied only streaming part from StreamlitCallbackHandler """
@@ -34,7 +35,6 @@ class SimpleStreamlitCallbackHandler(BaseCallbackHandler):
 handler = SimpleStreamlitCallbackHandler()
 memory = ConversationBufferMemory()
 
-st.markdown("----")
 if ask:
     res_box = st.empty()
     with st.spinner('typing...'):
