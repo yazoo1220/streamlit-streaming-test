@@ -33,7 +33,7 @@ class SimpleStreamlitCallbackHandler(BaseCallbackHandler):
         self.tokens_area.markdown(self.tokens_stream)
 
 handler = SimpleStreamlitCallbackHandler()
-memory = ConversationBufferMemory()
+memory = ConversationBufferMemory(memory_key="chat_history)
 
 if ask:
     res_box = st.empty()
@@ -44,7 +44,7 @@ if ask:
         query = prefix + user_input
         conversation = ConversationChain(
             llm=chat, 
-            memory=ConversationBufferMemory()            
+            memory=memory            
         )
         res = conversation.predict(input=query, callbacks=[handler])
     
