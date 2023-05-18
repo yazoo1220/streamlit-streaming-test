@@ -33,7 +33,7 @@ class SimpleStreamlitCallbackHandler(BaseCallbackHandler):
         self.tokens_area.markdown(self.tokens_stream)
 
 handler = SimpleStreamlitCallbackHandler()
-memory = ConversationBufferMemory(memory_key="chat_history)
+memory = ConversationBufferMemory(memory_key="chat_history")
 
 if ask:
     res_box = st.empty()
