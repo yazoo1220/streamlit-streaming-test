@@ -26,7 +26,7 @@ prompt = PromptTemplate(
     template='Based on the following chat_history, Please reply to the question in format of markdown. chat_history: {chat_history}. question: {question}'
 )
 
-user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="input")
+user_input = st.text_input("You: ",placeholder = "Ask me anything ...")
 ask = st.button('ask',type='primary')
 st.markdown("----")
 
