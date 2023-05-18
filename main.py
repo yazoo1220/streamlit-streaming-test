@@ -61,12 +61,12 @@ if ask:
     with st.spinner('typing...'):
         report = []
         chat = ChatOpenAI(streaming=True, temperature=0.9)
-        qa = ConversationalRetrievalChain(
+        qa = ConversationalRetrievalChain.from_llm(
             llm=chat, 
             prompt=prompt,
             retriever=retriever,
             memory=state['memory']            
         )
-        res = conversation.predict(question=user_input, callbacks=[handler])
+        res = qa({question:user_input, callbacks:[handler]})
     
 st.markdown("----")
