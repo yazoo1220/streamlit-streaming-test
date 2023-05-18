@@ -19,7 +19,7 @@ def get_state():
      return st.session_state.state 
 state = get_state()
 
-st.write(state.memory.load_memory_variables({}))
+st.write(state['memory'].load_memory_variables({}))
 
 prompt = PromptTemplate(
     input_variables=["chat_history","input"], 
