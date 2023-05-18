@@ -15,7 +15,7 @@ st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
 
 
 if "memory" not in st.session_state:
-    st.session_state.memory = {"memory": ConversationBufferMemory(memory_key="chat_history")}
+    st.session_state.memory = ConversationBufferMemory(memory_key="chat_history")
 
 
 prompt = PromptTemplate(
