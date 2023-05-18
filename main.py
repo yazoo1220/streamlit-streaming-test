@@ -38,7 +38,9 @@ class SimpleStreamlitCallbackHandler(StreamlitCallbackHandler):
 handler = SimpleStreamlitCallbackHandler()
 memory = ConversationBufferMemory()
 
-if st.button("Submit", type="primary"):
+ask = st.button('ask',type='primary')
+
+if ask:
     with st.spinner('typing...'):
         st.markdown("----")
         res_box = st.empty()
