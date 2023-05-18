@@ -27,7 +27,7 @@ memory = ConversationBufferMemory(memory_key="chat_history", return_messages=Tru
 
 prompt = PromptTemplate(
     input_variables=["history", "input"], 
-    template='Based on the following chat_history, Please reply to the question in format of markdown. chat_history: {chat_history},\n question: {question}'
+    template='Based on the following chat_history, Please reply to the question in format of markdown. chat_history: {history},\n question: {input}'
 )
 
 user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="input")
