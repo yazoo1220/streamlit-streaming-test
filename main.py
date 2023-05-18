@@ -5,6 +5,10 @@ from langchain.callbacks.base import BaseCallbackHandler
 from langchain.schema import (
     HumanMessage,
 )
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.document_loaders import UnstructuredURLLoader
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.vectorstores import Chroma
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
 import openai
