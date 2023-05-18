@@ -55,6 +55,7 @@ if ask:
         chat = ChatOpenAI(streaming=True, temperature=0.9)
         conversation = ConversationChain(
             llm=chat, 
+            prompt=prompt,
             memory=memory            
         )
         res = conversation.predict(input=user_input, callbacks=[handler])
