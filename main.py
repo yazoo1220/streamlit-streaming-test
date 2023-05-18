@@ -18,8 +18,8 @@ def get_state():
          st.session_state.state = {"memory": ConversationBufferMemory(memory_key="chat_history")} 
      return st.session_state.state 
 state = get_state()
-st.write(state)
-st.write(state['memory'])
+
+st.write(state.memory.load_memory_variables({}))
 
 prompt = PromptTemplate(
     input_variables=["chat_history","input"], 
