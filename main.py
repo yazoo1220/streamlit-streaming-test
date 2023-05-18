@@ -17,27 +17,25 @@ st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
 
 user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="input")
 
+class SimpleStreamlitCallbackHandler(StreamlitCallbackHandler):
+    def on_llm_start(
+        self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
+    ) -> None:
+        """do nothing"""
+        pass
+    
+        def on_chain_start(
+        self, serialized: Dict[str, Any], inputs: Dict[str, Any], **kwargs: Any
+    ) -> None:
+        """do nothing"""
+        pass
 
-# loader = UnstructuredURLLoader(["https://en.wikipedia.org/wiki/Eurovision_Song_Contest"])
-# documents = loader.load()
-# text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-# docs = text_splitter.split_documents(documents)
-# embeddings = OpenAIEmbeddings()
-# docsearch = Chroma.from_documents(docs, embeddings)
-handler = StreamlitCallbackHandler()
+    def on_chain_end(self, outputs: Dict[str, Any], **kwargs: Any) -> None:
+        """do nothing"""
+        pass
+
+handler = SimpleStreamlitCallbackHandler()
 memory = ConversationBufferMemory()
-
-# def gen_prompt(docs, query) -> str:
-#     return f"""To answer the question please only use the Context given, nothing else. Do not make up answer, simply say 'I don't know' if you are not sure.
-# Question: {query}
-# Context: {[doc.page_content for doc in docs]}
-# Answer:
-# """
-
-# def prompt(query):
-#      docs = docsearch.similarity_search(query, k=4)
-#      prompt = gen_prompt(docs, query)
-#      return prompt
 
 if st.button("Submit", type="primary"):
     with st.spinner('typing...'):
