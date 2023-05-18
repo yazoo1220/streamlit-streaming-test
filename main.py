@@ -27,7 +27,7 @@ memory = ConversationBufferMemory(memory_key="chat_history", return_messages=Tru
 
 prompt = PromptTemplate(
     input_variables=["chat_history", "question"], 
-    template='Please output as markdown'
+    template='Based on the following chat_history, Please reply to the question in format of markdown. chat_history: {chat_history},\n question: {question}'
 )
 
 user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="input")
@@ -57,6 +57,6 @@ if ask:
             llm=chat, 
             memory=memory            
         )
-        res = conversation.predict(input=user_input, callbacks=[handler])
+        res = conversation.predict(question=user_input, callbacks=[handler])
     
 st.markdown("----")
