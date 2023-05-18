@@ -15,15 +15,15 @@ st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
 
 def get_state():
     if "state" not in st.session_state:
-        st.session_state.state = {"memory": ConversationBufferMemory(memory_key="history")}
+        st.session_state.state = {"memory": ConversationBufferMemory(memory_key="chat_history")}
     return st.session_state.state
 state = get_state()
 
-memory = ConversationBufferMemory(memory_key="history", return_messages=True)
+memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
 prompt = PromptTemplate(
-    input_variables=["history","input"], 
-    template='Based on the following chat_history, Please reply to the question in format of markdown. history: {history}. question: {input}'
+    input_variables=["chat_history","input"], 
+    template='Based on the following chat_history, Please reply to the question in format of markdown. history: {chat_history}. question: {input}'
 )
 
 user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key='input')
