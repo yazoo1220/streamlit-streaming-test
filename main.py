@@ -1,57 +1,59 @@
-from langchain.llms import OpenAI
 import streamlit as st
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.document_loaders import UnstructuredURLLoader
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.vectorstores import Chroma
+from langchain. chat_models import ChatOpenAI
+from langchain import PromptTemplate
+from langchain.callbacks.base import BaseCallbackHandler
+from langchain.schema import (
+    HumanMessage,
+)
+from langchain.chains import ConversationChain
+from langchain.memory import ConversationBufferMemory
 import openai
+from typing import Any, Dict, List
 
-st.header("AMA for Eurovision")
+st.header("AMA")
 st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
+                                  
+def get_state(): 
+     if "state" not in st.session_state: 
+         st.session_state.state = {"memory": ConversationBufferMemory(memory_key="chat_history")} 
+     return st.session_state.state 
+state = get_state()
 
-user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="input")
+st.write(state['memory'].load_memory_variables({}))
 
+prompt = PromptTemplate(
+    input_variables=["chat_history","input"], 
+    template='Based on the following chat_history, Please reply to the question in format of markdown. history: {chat_history}. question: {input}'
+)
 
-loader = UnstructuredURLLoader(["https://en.wikipedia.org/wiki/Eurovision_Song_Contest"])
-documents = loader.load()
-text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-docs = text_splitter.split_documents(documents)
-embeddings = OpenAIEmbeddings()
-docsearch = Chroma.from_documents(docs, embeddings)
+user_input = st.text_input("You: ",placeholder = "Ask me anything ...")
+ask = st.button('ask',type='primary')
+st.markdown("----")
 
-def gen_prompt(docs, query) -> str:
-    return f"""To answer the question please only use the Context given, nothing else. Do not make up answer, simply say 'I don't know' if you are not sure.
-Question: {query}
-Context: {[doc.page_content for doc in docs]}
-Answer:
-"""
-
-def prompt(query):
-     docs = docsearch.similarity_search(query, k=4)
-     prompt = gen_prompt(docs, query)
-     return prompt
-
-if st.button("Submit", type="primary"):
-    st.markdown("----")
-    res_box = st.empty()
-    report = []
-    completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", 
-                                             messages=[
-          {"role": "system", "content": "You're an assistant."},
-          {"role": "user", "content": f"{prompt(user_input)}"},
-          ], 
-        stream=True, 
-        max_tokens=100,
-        temperature=0)
+class SimpleStreamlitCallbackHandler(BaseCallbackHandler):
+    """ Copied only streaming part from StreamlitCallbackHandler """
     
-    for line in completion:
-        if 'content' in line['choices'][0]['delta']:
-            # join method to concatenate the elements of the list 
-            # into a single string, 
-            # then strip out any empty strings
-            report.append(line['choices'][0]['delta']['content'])
-        result = "".join(report).strip()
-        result = result.replace("\n", "")
-        res_box.markdown(f'*{result}*')
-            
+    def __init__(self) -> None:
+        self.tokens_area = st.empty()
+        self.tokens_stream = ""
+        
+    def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
+        """Run on new LLM token. Only available when streaming is enabled."""
+        self.tokens_stream += token
+        self.tokens_area.markdown(self.tokens_stream)
+
+handler = SimpleStreamlitCallbackHandler()
+
+if ask:
+    res_box = st.empty()
+    with st.spinner('typing...'):
+        report = []
+        chat = ChatOpenAI(streaming=True, temperature=0.9)
+        conversation = ConversationChain(
+            llm=chat, 
+            prompt=prompt,
+            memory=state['memory']            
+        )
+        res = conversation.predict(input=user_input, callbacks=[handler])
+    
 st.markdown("----")
