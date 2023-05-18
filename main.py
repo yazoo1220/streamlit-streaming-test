@@ -54,6 +54,6 @@ if ask:
             prompt=prompt,
             memory=state['memory']            
         )
-        res = conversation(input=user_input, callbacks=[handler])
+        res = conversation.predict(input=user_input, callbacks=[handler])
     
 st.markdown("----")
