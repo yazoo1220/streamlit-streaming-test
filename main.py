@@ -5,7 +5,7 @@ from langchain.callbacks.base import BaseCallbackHandler
 from langchain.schema import (
     HumanMessage,
 )
-from langchain.chains import ConversationChain
+from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
 import openai
 from typing import Any, Dict, List
@@ -13,12 +13,21 @@ from typing import Any, Dict, List
 st.header("AMA")
 st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
 
-
+loader = UnstructuredURLLoader(["https://en.wikipedia.org/wiki/Eurovision_Song_Contest"])
+documents = loader.load()
+text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+docs = text_splitter.split_documents(documents)
+embeddings = OpenAIEmbeddings()
+db = Chroma.from_documents(docs, embeddings)
+retriever = db.as_retriever()
+                                  
 def get_state(): 
      if "state" not in st.session_state: 
          st.session_state.state = {"memory": ConversationBufferMemory(memory_key="chat_history")} 
      return st.session_state.state 
 state = get_state()
+st.write(state)
+st.write(state['memory'])
 
 prompt = PromptTemplate(
     input_variables=["chat_history","question"], 
@@ -48,9 +57,10 @@ if ask:
     with st.spinner('typing...'):
         report = []
         chat = ChatOpenAI(streaming=True, temperature=0.9)
-        conversation = ConversationChain(
+        qa = ConversationalRetrievalChain(
             llm=chat, 
             prompt=prompt,
+            retriever=retriever,
             memory=state['memory']            
         )
         res = conversation.predict(question=user_input, callbacks=[handler])
