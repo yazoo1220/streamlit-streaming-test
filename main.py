@@ -47,10 +47,9 @@ if st.button("Submit", type="primary"):
         chat = ChatOpenAI(streaming=True, temperature=0.9)
         conversation = ConversationChain(
             llm=chat, 
-            memory=ConversationBufferMemory(),
-            callbacks=[handler]
+            memory=ConversationBufferMemory()            
         )
-        res = conversation.predict(input=user_input)
+        res = conversation.predict(input=user_input, callbacks=[handler])
     
 
 st.markdown("----")
