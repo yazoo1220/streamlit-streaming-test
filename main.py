@@ -30,7 +30,7 @@ prompt = PromptTemplate(
     template='Based on the following chat_history, Please reply to the question in format of markdown. chat_history: {chat_history},\n question: {question}'
 )
 
-user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="input")
+user_input = st.text_input("You: ",placeholder = "Ask me anything ...", key="question")
 ask = st.button('ask',type='primary')
 st.markdown("----")
 
@@ -58,6 +58,6 @@ if ask:
             prompt=prompt,
             memory=memory            
         )
-        res = conversation.predict(input=user_input, callbacks=[handler])
+        res = conversation.predict(question=user_input, callbacks=[handler])
     
 st.markdown("----")
