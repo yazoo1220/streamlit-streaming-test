@@ -14,7 +14,7 @@ st.header("AMA")
 st.subheader("Streamlit + ChatGPT + Langchain with `stream=True`")
 
 
-if "state" not in st.session_state:
+if "memory" not in st.session_state:
     st.session_state.memory = {"memory": ConversationBufferMemory(memory_key="chat_history")}
 
 
