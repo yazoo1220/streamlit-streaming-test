@@ -10,23 +10,34 @@ from langchain.memory import ConversationBufferMemory
 import openai
 from typing import Any, Dict, List
 
-# Add some vertical spacing to push the content to the top
-st.markdown("<br>", unsafe_allow_html=True)
 
-# Place the text_input at the bottom using CSS styling
-st.markdown(
-    """
-    <style>
-    .bottom-container {
-        position: fixed;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+sticky_css = """
+<style>
+.sticky-textbox {
+    position: sticky;
+    top: 20px;
+    background-color: white;
+    padding: 10px;
+    z-index: 1;
+}
+</style>
+"""
+
+sticky_html = """
+<div class="sticky-textbox">
+    <form>
+        <label for="input">Enter your input:</label><br>
+        <input type="text" id="input" name="input"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+"""
+
+# Render the CSS and HTML
+st.markdown(sticky_css, unsafe_allow_html=True)
+st.markdown(sticky_html, unsafe_allow_html=True)
+
+
 
 
 st.header("AMA")
