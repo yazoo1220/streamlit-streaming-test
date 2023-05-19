@@ -47,12 +47,10 @@ prompt = PromptTemplate(
 
 # Place the text_input inside the bottom-container div
 st.markdown('<div class="bottom-container">', unsafe_allow_html=True)
-user_input = st.text_input("Enter your input")
-st.markdown('</div>', unsafe_allow_html=True)
-
-
 user_input = st.text_input("You: ",placeholder = "Ask me anything ...")
 ask = st.button('ask',type='primary')
+st.markdown('</div>', unsafe_allow_html=True)
+
 st.markdown("----")
 
 class SimpleStreamlitCallbackHandler(BaseCallbackHandler):
@@ -67,8 +65,6 @@ class SimpleStreamlitCallbackHandler(BaseCallbackHandler):
         self.tokens_stream += token
         self.tokens_area.markdown(self.tokens_stream)
 
-handler = SimpleStreamlitCallbackHandler()
-
 if ask:
     res_box = st.empty()
     with st.spinner('typing...'):
@@ -81,6 +77,7 @@ if ask:
         )
         st.write("Input:", user_input)
         st.markdown("----")
+        handler = SimpleStreamlitCallbackHandler()
         res = conversation.predict(input=user_input, callbacks=[handler])
         user_input = ''
     
